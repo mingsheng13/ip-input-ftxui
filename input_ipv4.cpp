@@ -10,6 +10,7 @@
 namespace ftxui {
 namespace {
 
+// Options for the input of one component of the IP address.
 InputOption ByteInputOption() {
   InputOption style = InputOption::Spacious();
   style.multiline = false;
@@ -49,6 +50,7 @@ bool IsNumber(const Event& event) {
   return true;
 }
 
+// A component handling a single byte of the IP address.
 Component InputIPV4Byte(ComponentBase* parent, StringRef byte_content) {
   class Impl : public ComponentBase {
    private:
@@ -101,6 +103,7 @@ Component InputIPV4Byte(ComponentBase* parent, StringRef byte_content) {
 }
 }  // namespace
 
+// A component handling the full IP address.
 Component InputIPV4(StringRef content) {
   class Impl : public ComponentBase {
     private:
@@ -136,10 +139,14 @@ Component InputIPV4(StringRef content) {
     }
 
     bool OnEventInternal(const Event& event) {
+      // Special case for the '.' character. It is used to move to the next
+      // byte.
       if (event == Event::Character('.')) {
         return OnEvent(Event::ArrowRight);
       }
       
+      // Special case for the backspace character. If we can't use backspace on
+      // the current byte, we move to the previous byte.
       if (event == Event::Backspace) {
         if (ComponentBase::OnEvent(event)) {
           return true;
@@ -147,6 +154,8 @@ Component InputIPV4(StringRef content) {
         return ComponentBase::OnEvent(Event::ArrowLeft);
       }
 
+      // Special case for the number keyrs. If we can't add more characters to
+      // the current byte, we move to the next byte and try again.
       if (IsNumber(event)) {
         while(!ComponentBase::OnEvent(event)) {
           if (!ComponentBase::OnEvent(Event::ArrowRight)) {
@@ -158,7 +167,17 @@ Component InputIPV4(StringRef content) {
       
       return ComponentBase::OnEvent(event);
     }
+    
+    // Update the input bytes from the output string.
+    void SynchronizeDownward() {
+      std::stringstream ss(content_());
+      std::getline(ss, bytes[0], '.');
+      std::getline(ss, bytes[1], '.');
+      std::getline(ss, bytes[2], '.');
+      std::getline(ss, bytes[3], '.');
+    }
 
+    // Update the output string from the input bytes.
     void SynchronizeUpward() {
       std::stringstream ss;
       auto f = [](const std::string& s) { return s.empty() ? "0" : s; };
@@ -169,17 +188,8 @@ Component InputIPV4(StringRef content) {
       content_() = ss.str();
     }
 
-    void SynchronizeDownward() {
-      std::stringstream ss(content_());
-      std::getline(ss, bytes[0], '.');
-      std::getline(ss, bytes[1], '.');
-      std::getline(ss, bytes[2], '.');
-      std::getline(ss, bytes[3], '.');
-    }
-
    public:
     Impl(StringRef content) : content_(std::move(content)) {
-      SynchronizeDownward();
       Add(Container::Horizontal({
           input[0],
           input[1],
