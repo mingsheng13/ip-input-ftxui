@@ -4,16 +4,16 @@
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
 
-#include "ip_input.h"
+#include "input_ipv4.hpp"
 using namespace ftxui;
 
 // example
 int main() {
-  std::string ipv4;
-  std::string mask;
+  std::string ipv4 = "0.0.0.0";
+  std::string mask = "255.0.0.255";
 
-  auto ipInput = IpInput(&ipv4);
-  auto maskInput = IpInput(&mask);
+  auto ipInput = InputIPV4(&ipv4);
+  auto maskInput = InputIPV4(&mask);
 
   auto container = Container::Vertical({
       ipInput,
@@ -23,14 +23,13 @@ int main() {
   auto renderer = Renderer(container, [&] {
     return vbox({
         text("Enter ip:    "),
-        ipInput->Render(),
+        ipInput->Render() | border,
         text("Enter mask:  "),
-        maskInput->Render(),
-        window(text("output"), vbox(
-                                   {
-                                       text(ipv4),
-                                       text(mask),
-                                   }, )),
+        maskInput->Render() | border,
+        window(text("output"), vbox({
+                                   text(ipv4),
+                                   text(mask),
+                               })),
     });
   });
   auto screen = ScreenInteractive::TerminalOutput();

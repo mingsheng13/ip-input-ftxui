@@ -21,8 +21,8 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(${PROJECT_NAME} main.cpp
-        ip_input.h
-        ip_input.cpp)
+        input_ipv4.hpp
+        input_ipv4.cpp)
 
 
 target_link_libraries(${PROJECT_NAME}

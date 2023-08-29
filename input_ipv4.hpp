@@ -4,5 +4,5 @@
 #include "ftxui/util/ref.hpp"
 
 namespace ftxui {
-Component IpInput(StringRef content);
+Component InputIPV4(StringRef content);
 }
