@@ -21,16 +21,22 @@ int main() {
   });
 
   auto renderer = Renderer(container, [&] {
-    return vbox({
-        text("Enter ip:    "),
-        ipInput->Render() | border,
-        text("Enter mask:  "),
-        maskInput->Render() | border,
-        window(text("output"), vbox({
-                                   text(ipv4),
-                                   text(mask),
-                               })),
-    });
+    return hbox({
+               vbox({
+                   text("Input"),
+                   separator(),
+                   ipInput->Render(),
+                   maskInput->Render(),
+               }),
+               separator(),
+               vbox({
+                   text("Output"),
+                   separator(),
+                   text(ipv4),
+                   text(mask),
+               }),
+           }) |
+           border | center;
   });
   auto screen = ScreenInteractive::TerminalOutput();
   screen.Loop(renderer);
