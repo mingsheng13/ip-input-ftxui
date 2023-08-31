@@ -1,34 +1,15 @@
-cmake_minimum_required(VERSION 3.12)
-project(ip_input_ftxui)
+cmake_minimum_required(VERSION 3.14)
+project(ftxui-ip-input)
+include(cmake/ftxui.cmake)
 
-# --- Fetch FTXUI --------------------------------------------------------------
-include(FetchContent)
+add_library(ftxui-ip-input STATIC
+        include/ftxui-ip-input/ipv4.hpp
+        src/ftxui-ip-input/ipv4.cpp
+        )
+target_link_libraries(ftxui-ip-input PUBLIC ftxui::component)
 
-set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
-FetchContent_Declare(ftxui
-        GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-        GIT_TAG v5.0.0
+target_include_directories(ftxui-ip-input PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
-
-FetchContent_GetProperties(ftxui)
-if(NOT ftxui_POPULATED)
-    FetchContent_Populate(ftxui)
-    add_subdirectory(${ftxui_SOURCE_DIR} ${ftxui_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
-
-# ------------------------------------------------------------------------------
-
-set(CMAKE_CXX_STANDARD 17)
-
-add_executable(${PROJECT_NAME} main.cpp
-        input_ipv4.hpp
-        input_ipv4.cpp)
-
-
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE ftxui::screen
-        PRIVATE ftxui::dom
-        PRIVATE ftxui::component
-)
-
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+add_subdirectory(example)

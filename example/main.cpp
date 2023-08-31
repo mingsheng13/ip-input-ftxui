@@ -4,7 +4,7 @@
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
 
-#include "input_ipv4.hpp"
+#include "ftxui-ip-input/ipv4.hpp"
 using namespace ftxui;
 
 // example

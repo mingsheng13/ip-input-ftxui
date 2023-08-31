@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 
+#include "ftxui-ip-input/ipv4.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
 #include "ftxui/dom/elements.hpp"
-#include "input_ipv4.hpp"
 
 namespace ftxui {
 namespace {
