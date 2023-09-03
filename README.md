@@ -34,7 +34,7 @@ using namespace ftxui;
 
 int main() {
   std::string ipv4 = "0.0.0.0";
-  auto input = InputIPV4(&ipv4);
+  auto input = InputIPV4(&ipv4) | border;
   auto screen = ScreenInteractive::TerminalOutput();
   screen.Loop(input);
 }
