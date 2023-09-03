@@ -9,7 +9,7 @@ if (ftuix_FOUND)
   return()
 endif()
 
-# Fallback on FetchContent
+# Fallback on a specific version of FTXUI using FetchContent.
 include(FetchContent)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(ftxui

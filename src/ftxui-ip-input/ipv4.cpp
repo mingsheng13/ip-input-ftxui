@@ -106,15 +106,15 @@ Component InputIPV4Byte(ComponentBase* parent, StringRef byte_content) {
 // A component handling the full IP address.
 Component InputIPV4(StringRef content) {
   class Impl : public ComponentBase {
-    private:
-     StringRef content_;
-     std::string bytes[4];
-     Component input[4] = {
+   private:
+    StringRef content_;
+    std::string bytes[4];
+    Component input[4] = {
         InputIPV4Byte(this, &bytes[0]),
         InputIPV4Byte(this, &bytes[1]),
         InputIPV4Byte(this, &bytes[2]),
         InputIPV4Byte(this, &bytes[3]),
-     };
+    };
 
     Element Render() override {
       SynchronizeDownward();
@@ -144,7 +144,7 @@ Component InputIPV4(StringRef content) {
       if (event == Event::Character('.')) {
         return OnEvent(Event::ArrowRight);
       }
-      
+
       // Special case for the backspace character. If we can't use backspace on
       // the current byte, we move to the previous byte.
       if (event == Event::Backspace) {
@@ -157,17 +157,17 @@ Component InputIPV4(StringRef content) {
       // Special case for the number keyrs. If we can't add more characters to
       // the current byte, we move to the next byte and try again.
       if (IsNumber(event)) {
-        while(!ComponentBase::OnEvent(event)) {
+        while (!ComponentBase::OnEvent(event)) {
           if (!ComponentBase::OnEvent(Event::ArrowRight)) {
             return false;
           }
         }
         return true;
       }
-      
+
       return ComponentBase::OnEvent(event);
     }
-    
+
     // Update the input bytes from the output string.
     void SynchronizeDownward() {
       std::stringstream ss(content_());
