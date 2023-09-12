@@ -1,7 +1,6 @@
-## Description
+## A [FTXUI](https://github.com/ArthurSonzogni/FTXUI) component to input IPv4 addresses
 
-A [FTXUI](https://github.com/ArthurSonzogni/FTXUI) component to input IPv4
-addresses:
+preview:
 ```
 ╭────────────────┬───────────╮
 │Input           │Output     │
