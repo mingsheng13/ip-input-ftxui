@@ -5,6 +5,7 @@
 #include "ftxui-ip-input/ipv4.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
+#include "ftxui/component/event.hpp"
 #include "ftxui/dom/elements.hpp"
 
 namespace ftxui {
@@ -58,7 +59,7 @@ Component InputIPV4Byte(ComponentBase* parent, StringRef byte_content) {
     StringRef content_;
     Component input = Input(content_, ByteInputOption());
 
-    Element Render() override {
+    Element OnRender() override {
       RegularizeByte();
       return ComponentBase::Render() | notflex;
     }
@@ -116,7 +117,7 @@ Component InputIPV4(StringRef content) {
         InputIPV4Byte(this, &bytes[3]),
     };
 
-    Element Render() override {
+    Element OnRender() override {
       SynchronizeDownward();
       return dbox({
           ComponentBase::Render(),
